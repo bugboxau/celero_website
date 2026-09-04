@@ -27,7 +27,7 @@ export default function Home() {
           maxWidth: '18ch',
         }}
       >
-        Something faster is on the way.
+        Clarity for retail performance.
       </h1>
       <p
         style={{
@@ -37,9 +37,7 @@ export default function Home() {
           marginTop: '1.25rem',
         }}
       >
-        Celero Software is building an AI agent that accelerates software
-        implementation projects — reviewing configs, drafting changes, and
-        showing its work.
+        Retail dashboards, plus an AI assistant for CFO and GM insights.
       </p>
     </main>
   );

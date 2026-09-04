@@ -3,7 +3,7 @@ import './globals.css';
 export const metadata = {
   title: 'Celero Software — Coming Soon',
   description:
-    'Celero Software is building an AI agent that accelerates software implementation projects.',
+    'Retail performance dashboards, plus an AI assistant for CFO and GM insights.',
   icons: {
     icon: [
       { url: '/favicon-16.png', sizes: '16x16', type: 'image/png' },
@@ -14,7 +14,7 @@ export const metadata = {
   openGraph: {
     title: 'Celero Software',
     description:
-      'Celero Software is building an AI agent that accelerates software implementation projects.',
+      'Retail performance dashboards, plus an AI assistant for CFO and GM insights.',
     url: 'https://celerosoftware.ai',
     type: 'website',
   },
