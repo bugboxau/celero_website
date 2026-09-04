@@ -1,0 +1,27 @@
+:root {
+  --ink: #161616;
+  --ink-70: rgba(22, 22, 22, 0.7);
+  --coral: #ff5a3c;
+  --paper: #f4f3f1;
+  --font-display: 'Space Grotesk', 'Poppins', 'Sora', 'Helvetica Neue', Arial, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}

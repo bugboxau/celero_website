@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Celero Software — AI-Accelerated Implementation</title>
+<meta name="description" content="Celero accelerates software implementation projects with an AI agent that reviews configs, drafts changes, and shows its work." />
+<meta property="og:title" content="Celero Software" />
+<meta property="og:description" content="Celero accelerates software implementation projects with an AI agent that reviews configs, drafts changes, and shows its work." />
+<meta property="og:url" content="https://bugboxlab.au/celero-preview-22c71928.html" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="images/celero_assets/assets/png/favicon-32.png" sizes="32x32" type="image/png" />
+<link rel="apple-touch-icon" href="images/celero_assets/assets/png/apple-touch-icon-180.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap"
+  rel="stylesheet"
+/>
+<style>
+  :root {
+    --ink: #161616;
+    --ink-70: rgba(22,22,22,0.7);
+    --ink-50: rgba(22,22,22,0.5);
+    --cobalt: #1B3A8C;
+    --coral: #FF5A3C;
+    --paper: #F4F3F1;
+    --white: #FFFFFF;
+    --border: rgba(22,22,22,0.14);
+    --border-soft: rgba(22,22,22,0.08);
+    --radius: 3px;
+    --font-display: 'Space Grotesk', 'Poppins', 'Sora', 'Helvetica Neue', Arial, sans-serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-weight: 400;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 700; margin: 0; letter-spacing: -0.015em; }
+  p { margin: 0; }
+  ul { margin: 0; padding: 0; list-style: none; }
+  section { padding: clamp(3rem, 7vw, 6rem) 0; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 clamp(1.25rem, 4vw, 2.5rem); }
+
+  :focus-visible {
+    outline: 2px solid var(--cobalt);
+    outline-offset: 2px;
+  }
+
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.75rem 1.25rem;
+    z-index: 200;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+  }
+  .skip-link:focus { left: 0; }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--cobalt);
+    margin: 0 0 0.75rem;
+    display: block;
+  }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    border-radius: var(--radius);
+    white-space: nowrap;
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  .btn-solid {
+    background: var(--coral);
+    color: var(--paper);
+    border: 1px solid var(--coral);
+  }
+  .btn-solid:hover { background: #e6472c; border-color: #e6472c; }
+  .btn-sm { font-size: 0.66rem; padding: 0.55rem 1rem; }
+  .btn-lg { font-size: 0.76rem; padding: 0.95rem 1.75rem; }
+
+  /* Nav */
+  .site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--paper);
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .site-nav .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-top: 0.85rem;
+    padding-bottom: 0.85rem;
+  }
+  .brand { display: inline-flex; align-items: center; }
+  .brand-logo { height: 26px; width: auto; }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex: 1;
+    justify-content: center;
+  }
+  .nav-links a {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    color: var(--ink-70);
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-ctas { display: flex; align-items: center; gap: 0.6rem; flex-shrink: 0; }
+  .nav-toggle {
+    display: none;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.45rem 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    color: var(--ink);
+  }
+
+  /* Hero */
+  .hero { padding-top: clamp(3.5rem, 9vw, 7rem); padding-bottom: clamp(3rem, 7vw, 5.5rem); }
+  .hero .wrap { max-width: 900px; text-align: left; }
+  .hero h1 {
+    font-size: clamp(2.1rem, 5.2vw, 4rem);
+    letter-spacing: -0.02em;
+    line-height: 1.04;
+    color: var(--ink);
+  }
+  .hero .subhead {
+    font-size: clamp(1rem, 1.6vw, 1.2rem);
+    color: var(--ink-70);
+    max-width: 46ch;
+    margin-top: 1.25rem;
+    font-weight: 400;
+  }
+  .hero-ctas { display: flex; flex-wrap: wrap; gap: 0.85rem; margin-top: 2.25rem; }
+
+  /* Logo bar */
+  .logo-bar { padding-top: 0; padding-bottom: clamp(3rem, 6vw, 4.5rem); }
+  .logo-bar .eyebrow { text-align: left; }
+  .logo-row {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .logo-placeholder {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--white);
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.05em;
+    color: var(--ink-50);
+    text-align: center;
+    padding: 0.4rem;
+  }
+
+  /* Capability grid */
+  .capabilities { border-top: 1px solid var(--border-soft); }
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 2.25rem; }
+  .section-head h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); letter-spacing: -0.015em; }
+  .cap-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .cap-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--white);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .cap-shot {
+    aspect-ratio: 16 / 10;
+    background: #EAE7DF;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    text-align: center;
+  }
+  .cap-shot span {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    color: var(--ink-50);
+    letter-spacing: 0.03em;
+    line-height: 1.5;
+  }
+  .cap-body { padding: 1.25rem 1.35rem 1.5rem; }
+  .cap-label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--ink);
+  }
+  .cap-caption { font-size: 0.9rem; color: var(--ink-70); margin-top: 0.6rem; }
+  .cap-link {
+    display: inline-block;
+    margin-top: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    color: var(--cobalt);
+  }
+  .cap-link:hover { text-decoration: underline; }
+
+  /* Testimonials */
+  .testimonials { border-top: 1px solid var(--border-soft); }
+  .quote-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .quote-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--white);
+    padding: 1.75rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .quote-card blockquote {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+    line-height: 1.35;
+  }
+  .quote-person { display: flex; align-items: center; gap: 0.75rem; }
+  .avatar-placeholder {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 1px dashed var(--border);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 0.5rem;
+    color: var(--ink-50);
+  }
+  .quote-meta { font-family: var(--font-mono); font-size: 0.68rem; color: var(--ink-70); line-height: 1.5; }
+
+  /* Stat band */
+  .stat-band { border-top: 1px solid var(--border-soft); }
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    text-align: left;
+  }
+  .stat-num {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: clamp(2rem, 4vw, 3rem);
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-70);
+    margin-top: 0.4rem;
+  }
+
+  /* Trust band */
+  .trust-band { border-top: 1px solid var(--border-soft); }
+  .trust-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.25rem;
+    margin-top: 1.5rem;
+  }
+  .badge {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--white);
+    padding: 0.6rem 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.05em;
+    color: var(--ink-70);
+  }
+  .trust-sentence { font-size: 0.92rem; color: var(--ink-70); margin-top: 1.5rem; max-width: 60ch; }
+
+  /* Final CTA */
+  .final-cta {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .final-cta .wrap { text-align: center; }
+  .final-cta h2 {
+    color: var(--paper);
+    font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+    letter-spacing: -0.015em;
+    max-width: 30ch;
+    margin: 0 auto;
+  }
+  .final-cta-ctas {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-top: 2rem;
+  }
+
+  /* Footer */
+  .site-footer { background: var(--ink); color: var(--paper); border-top: 1px solid rgba(255,255,255,0.1); }
+  .footer-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 3rem;
+    flex-wrap: wrap;
+    padding-top: clamp(3rem, 6vw, 4.5rem);
+    padding-bottom: 2.5rem;
+  }
+  .footer-brand-logo { height: 24px; width: auto; }
+  .footer-cols { display: flex; gap: 3.5rem; flex-wrap: wrap; }
+  .footer-col h3 {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+    color: rgba(246,243,236,0.5);
+    margin-bottom: 0.9rem;
+  }
+  .footer-col ul { display: flex; flex-direction: column; gap: 0.6rem; }
+  .footer-col a { font-size: 0.86rem; text-decoration: none; color: rgba(246,243,236,0.85); }
+  .footer-col a:hover { color: var(--paper); }
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 1.5rem;
+  }
+  .footer-copy { font-family: var(--font-mono); font-size: 0.68rem; color: rgba(246,243,236,0.5); }
+  .social-row { display: flex; gap: 0.75rem; }
+  .social-placeholder {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius);
+    border: 1px solid rgba(255,255,255,0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .social-placeholder svg { width: 14px; height: 14px; }
+
+  @media (max-width: 900px) {
+    .cap-grid { grid-template-columns: repeat(2, 1fr); }
+    .quote-row { grid-template-columns: 1fr; }
+    .stat-row { grid-template-columns: repeat(2, 1fr); row-gap: 2rem; }
+    .logo-row { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  @media (max-width: 720px) {
+    .nav-toggle { display: inline-flex; }
+    .nav-links {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--paper);
+      border-bottom: 1px solid var(--border-soft);
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+      padding: 0 clamp(1.25rem, 4vw, 2.5rem);
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.2s ease;
+    }
+    .nav-links.is-open { max-height: 320px; padding-top: 0.5rem; padding-bottom: 1rem; }
+    .nav-links li { width: 100%; }
+    .nav-links a { display: block; padding: 0.6rem 0; }
+    .cap-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 520px) {
+    .logo-row { grid-template-columns: repeat(2, 1fr); }
+    .stat-row { grid-template-columns: 1fr 1fr; }
+    .nav-ctas { gap: 0.4rem; }
+    .footer-top { flex-direction: column; gap: 2rem; }
+    .footer-cols { flex-direction: column; gap: 1.75rem; }
+    .footer-bottom { flex-direction: column; align-items: flex-start; gap: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-nav">
+  <nav class="wrap" aria-label="Primary">
+    <a class="brand" href="#top" aria-label="Celero Software — home">
+      <img class="brand-logo" src="images/celero_assets/assets/light-bg/celero-lockup-ink-coral-accent.svg" alt="Celero Software" />
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" id="nav-toggle">Menu</button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#platform">[menu1]</a></li>
+      <li><a href="#solutions">[menu2]</a></li>
+      <li><a href="#security">[menu3]</a></li>
+      <li><a href="#company">[menu4]</a></li>
+    </ul>
+    <div class="nav-ctas">
+      <!-- TODO: point at scheduling tool / contact-sales form -->
+      <a class="btn btn-solid btn-sm" href="#demo">Book a Demo</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+
+  <section class="hero" id="top">
+    <div class="wrap">
+      <h1>[HEADLINE: what Celero does and for whom, ~6-8 words]</h1>
+      <p class="subhead">[SUBHEAD: one sentence expanding the promise — one clear line, no jargon]</p>
+      <div class="hero-ctas">
+        <!-- TODO: point at scheduling tool / contact-sales form -->
+        <a class="btn btn-solid btn-lg" href="#demo">Book a Demo</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="logo-bar" aria-label="Trusted by">
+    <div class="wrap">
+      <span class="eyebrow">Trusted by teams at</span>
+      <div class="logo-row">
+        <div class="logo-placeholder" role="img" aria-label="Client logo placeholder">[CLIENT LOGO]</div>
+        <div class="logo-placeholder" role="img" aria-label="Client logo placeholder">[CLIENT LOGO]</div>
+        <div class="logo-placeholder" role="img" aria-label="Client logo placeholder">[CLIENT LOGO]</div>
+        <div class="logo-placeholder" role="img" aria-label="Client logo placeholder">[CLIENT LOGO]</div>
+        <div class="logo-placeholder" role="img" aria-label="Client logo placeholder">[CLIENT LOGO]</div>
+        <div class="logo-placeholder" role="img" aria-label="Client logo placeholder">[CLIENT LOGO]</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="platform" class="capabilities">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>What Celero does</h2>
+      </div>
+      <div class="cap-grid">
+        <article class="cap-card">
+          <div class="cap-shot"><span>[PRODUCT SCREENSHOT: unified retail P&amp;L dashboard]</span></div>
+          <div class="cap-body">
+            <p class="cap-label">Unified Retail P&amp;L</p>
+            <p class="cap-caption">Every store's numbers in one clean view, no spreadsheet stitching.</p>
+            <a class="cap-link" href="#">Learn more →</a>
+          </div>
+        </article>
+        <article class="cap-card">
+          <div class="cap-shot"><span>[PRODUCT SCREENSHOT: flagged discrepancy in a data feed]</span></div>
+          <div class="cap-body">
+            <p class="cap-label">Anomaly Detection</p>
+            <p class="cap-caption">Catches mismatched or missing figures before they reach the report.</p>
+            <a class="cap-link" href="#">Learn more →</a>
+          </div>
+        </article>
+        <article class="cap-card">
+          <div class="cap-shot"><span>[PRODUCT SCREENSHOT: auto-reconciled ledger entries]</span></div>
+          <div class="cap-body">
+            <p class="cap-label">Auto-Reconciliation</p>
+            <p class="cap-caption">Matches POS, bank, and supplier feeds without manual entry.</p>
+            <a class="cap-link" href="#">Learn more →</a>
+          </div>
+        </article>
+        <article class="cap-card">
+          <div class="cap-shot"><span>[PRODUCT SCREENSHOT: variance callout on a trend chart]</span></div>
+          <div class="cap-body">
+            <p class="cap-label">Variance Explained</p>
+            <p class="cap-caption">Plain-language reasons behind every swing, not just the number.</p>
+            <a class="cap-link" href="#">Learn more →</a>
+          </div>
+        </article>
+        <article class="cap-card">
+          <div class="cap-shot"><span>[PRODUCT SCREENSHOT: store performance leaderboard]</span></div>
+          <div class="cap-body">
+            <p class="cap-label">Live Store Comparison</p>
+            <p class="cap-caption">Rank performance across locations the moment data lands.</p>
+            <a class="cap-link" href="#">Learn more →</a>
+          </div>
+        </article>
+        <article class="cap-card">
+          <div class="cap-shot"><span>[PRODUCT SCREENSHOT: messy source data normalized into one table]</span></div>
+          <div class="cap-body">
+            <p class="cap-label">Clean Data From Messy Sources</p>
+            <p class="cap-caption">Turns inconsistent manual entries into one trustworthy source of truth.</p>
+            <a class="cap-link" href="#">Learn more →</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonials">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>What our clients say</h2>
+      </div>
+      <div class="quote-row">
+        <article class="quote-card">
+          <blockquote>[CUSTOMER QUOTE — 1 SENTENCE]</blockquote>
+          <div class="quote-person">
+            <div class="avatar-placeholder" role="img" aria-label="Headshot placeholder">PHOTO</div>
+            <p class="quote-meta">[NAME, TITLE, COMPANY]</p>
+          </div>
+        </article>
+        <article class="quote-card">
+          <blockquote>[CUSTOMER QUOTE — 1 SENTENCE]</blockquote>
+          <div class="quote-person">
+            <div class="avatar-placeholder" role="img" aria-label="Headshot placeholder">PHOTO</div>
+            <p class="quote-meta">[NAME, TITLE, COMPANY]</p>
+          </div>
+        </article>
+        <article class="quote-card">
+          <blockquote>[CUSTOMER QUOTE — 1 SENTENCE]</blockquote>
+          <div class="quote-person">
+            <div class="avatar-placeholder" role="img" aria-label="Headshot placeholder">PHOTO</div>
+            <p class="quote-meta">[NAME, TITLE, COMPANY]</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="stat-band">
+    <div class="wrap">
+      <div class="stat-row">
+        <div>
+          <p class="stat-num">[XX+]</p>
+          <p class="stat-label">Stores reporting through Celero</p>
+        </div>
+        <div>
+          <p class="stat-num">[XX%]</p>
+          <p class="stat-label">Faster close on monthly reporting</p>
+        </div>
+        <div>
+          <p class="stat-num">[XXk]</p>
+          <p class="stat-label">Transactions reconciled daily</p>
+        </div>
+        <div>
+          <p class="stat-num">[XX%]</p>
+          <p class="stat-label">Reduction in reporting errors</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="security" class="trust-band">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Built for procurement review</h2>
+      </div>
+      <!-- TODO: confirm which certifications Celero actually holds or is pursuing before publishing -->
+      <div class="trust-row">
+        <span class="badge">[SOC 2 TYPE II — STATUS TBC]</span>
+        <span class="badge">[ISO 27001 — STATUS TBC]</span>
+        <span class="badge">[GDPR — STATUS TBC]</span>
+      </div>
+      <p class="trust-sentence">Celero is built to sit inside systems that already carry a client's compliance obligations — every certification here reflects a real audit, not a badge.</p>
+    </div>
+  </section>
+
+  <section class="final-cta">
+    <div class="wrap">
+      <h2>Ready to accelerate your next implementation?</h2>
+      <div class="final-cta-ctas">
+        <!-- TODO: point at scheduling tool / contact-sales form -->
+        <a class="btn btn-solid btn-lg" href="#demo">Book a Demo</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer" id="company">
+  <div class="wrap">
+    <div class="footer-top">
+      <img class="footer-brand-logo" src="images/celero_assets/assets/dark-bg/celero-lockup-white-coral-accent.svg" alt="Celero Software" />
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h3>Platform</h3>
+          <ul>
+            <li><a href="#platform">Capabilities</a></li>
+            <li><a href="#security">Security</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Company</h3>
+          <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>Legal</h3>
+          <ul>
+            <li><a href="#">Privacy</a></li>
+            <li><a href="#">Terms</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 Celero Software. All rights reserved.</p>
+      <div class="social-row">
+        <a class="social-placeholder" href="#" aria-label="Celero Software on LinkedIn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 10v7M7 7v.01M11 17v-4.5a2 2 0 0 1 4 0V17M11 12.5V17"/></svg>
+        </a>
+        <a class="social-placeholder" href="#" aria-label="Celero Software on X">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 4l16 16M20 4L4 20"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var toggle = document.getElementById('nav-toggle');
+    var links = document.getElementById('nav-links');
+    toggle.addEventListener('click', function () {
+      var isOpen = links.classList.toggle('is-open');
+      toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+    links.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        links.classList.remove('is-open');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>
