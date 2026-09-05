@@ -37,16 +37,6 @@ export default function Home() {
           marginTop: '1.25rem',
         }}
       >
-        Intelligent dashboards for business insights.
-      </p>
-      <p
-        style={{
-          fontSize: 'clamp(1rem, 1.6vw, 1.15rem)',
-          color: 'var(--ink-70)',
-          maxWidth: '46ch',
-          marginTop: '1.25rem',
-        }}
-      >
         [coming soon]
       </p>
     </main>
