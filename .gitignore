@@ -3,3 +3,6 @@ node_modules
 out
 .vercel
 *.log
+
+# Generated per-person email signatures (contain personal phone numbers)
+/email-signatures/
